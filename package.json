@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/PilockHulmes/girls-frontline-automation#readme",
   "dependencies": {
-    "electron-prebuilt": "^1.2.5"
+    "electron-prebuilt": "^1.2.5",
+    "node-gyp": "^3.4.0",
+    "robotjs": "^0.4.4"
   }
 }
