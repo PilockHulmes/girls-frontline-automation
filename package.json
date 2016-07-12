@@ -19,6 +19,6 @@
   "homepage": "https://github.com/PilockHulmes/girls-frontline-automation#readme",
   "dependencies": {
     "electron-prebuilt": "^1.2.5",
-    "less": "^2.7.1",
+    "less": "^2.7.1"
   }
 }
