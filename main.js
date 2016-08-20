@@ -7,7 +7,6 @@ let mainWindow
 app.on('ready', function() {
   mainWindow = new BrowserWindow({
     show: false,
-    backgroundColor: '#c3bed4',
     resizable: false,
     show: false
   })

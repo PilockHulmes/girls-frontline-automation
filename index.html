@@ -3,22 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Girls Frontline Automation</title>
-
-    <link rel="import" type="less" href="assets/less/expedition.less">
-
-    <link rel="import" type="template" href="sections/expedition.html">
   </head>
   <body>
-    <nav>
-      <button type="button" id="expedition">远征</button>
-    </nav>
-
-    <main class="content"></main>
-
-    <script>
-      const scriptPath = './assets/js-script'
-      require(`${scriptPath}/nav`) // render the nav menu
-      require(`${scriptPath}/less`) // less to css, and load it in page
-    </script>
+    <app></app>
+    <script src="./dist/build.js" charset="utf-8"></script>
   </body>
 </html>
