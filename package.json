@@ -20,7 +20,8 @@
   "homepage": "https://github.com/PilockHulmes/girls-frontline-automation#readme",
   "dependencies": {
     "electron-prebuilt": "^1.2.5",
-    "vue": "^1.0.26"
+    "vue": "^1.0.26",
+    "vue-router": "^0.7.13"
   },
   "devDependencies": {
     "babel-core": "^6.13.2",
@@ -31,6 +32,9 @@
     "babel-runtime": "^6.11.6",
     "bezier-js": "^2.2.1",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "lodash": "^4.15.0",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.2.3",
