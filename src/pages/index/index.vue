@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="index">
-    hello world
+    <canvas id="canvas" width="300" height="300"></canvas>
   </div>
 </template>
 
