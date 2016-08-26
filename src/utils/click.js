@@ -57,8 +57,7 @@ const mouseMove = (src, dest) => {
 const drag = (src, dest) => {
   mouseDown(src)
 
-  const mp1 = {x: 200, y: 450} // middle point 1
-  const mp2 = {x: 400, y: 80} // middle point 2
+  const [mp1, mp2] = getMiddlePoints(src, dest)
 
   click(mp1)
   click(mp2)
@@ -94,30 +93,35 @@ const drag = (src, dest) => {
   mouseUp(dest)
 }
 
-const getMiddlePoints = (src, dest) => {
-  let mp1 = {}, mp2 = {}
+// point: a point in the line from src to dest
+// -1/k = (dest.y - src.y) / (dest.x - src.x)
+// => k = (src.x - dest.x) / (dest.y - src.y)
+// line => y - point.y = k * (x - point.x)
+// circle  (x - src.x)^2 + (y - src.y)^2 = r^2
 
+// Formula:
+// (x-a)^2 + (y-b)^2 = r^2
+// y=kx+c
+// so x = (2(a+b-c) ± (√Δ) ) / 2(1 + k^2)
+// and delta = 4(c-b-a)^2 - 4(1+k^2)(c-b-a)
+
+// c = k * point.x + point.y
+// a = src.x or dest.x
+// b = src.y or dest.y
+// k = (src.x - dest.x) / (dest.y - src.y)
+const getMiddlePoints = (src, dest) => {
   const lineLength = Math.sqrt(Math.pow(dest.x - src.x, 2) + Math.pow(dest.y - src.y, 2))
 
   const radius = Math.round(lineLength / 6)
 
   const angle = utils.random(...middlePointAngle)
 
-  // point: a point in the line from src to dest
-  // -1/k = (dest.y - src.y) / (dest.x - src.x)
-  // => k = (src.x - dest.x) / (dest.y - src.y)
-  // line => y - point.y = k * (x - point.x)
-  // circle  (x - src.x)^2 + (y - src.y)^2 = r^2
+  const {srcPoint, destPoint} = getPoints(src, dest)
 
-  // Formula:
-  // (x-a)^2 + (y-b)^2 = r^2
-  // y=kx+c
-  // so x = (2(a+b-c) ± (√Δ) ) / 2(1 + k^2)
-  // and delta = 4(c-b-a)^2 - 4(1+k^2)(c-b-a)
+  const k = getPerpendicularSlope(src, dest)
 
-  // c = k * point.x + point.y
-  // a = src.x or dest.x
-  // b = src.y or dest.y
+  const mp1 = getOneIntersectionPoint(k, srcPoint, radius, src)
+  const mp2 = getOneIntersectionPoint(k, destPoint, radius, dest)
 
   return [mp1, mp2]
 }
@@ -127,7 +131,7 @@ const getPoints = (src, dest) => {
 
   const radius = Math.round(lineLength / 6)
 
-  const length = uilts.random(Math.round(raidus / 5), radius)
+  const length = utils.random(Math.round(radius / 5), radius)
 
   const ratio = length / lineLength // length ratio
 
@@ -144,14 +148,44 @@ const getPoints = (src, dest) => {
   return {srcPoint, destPoint}
 }
 
-// get k
+// k = (src.x - dest.x) / (dest.y - src.y)
 const getPerpendicularSlope = (src, dest) => {
   return (src.x - dest.x) / (dest.y - src.y)
 }
 
+// so x = (2(a+b-c) ± (√Δ) ) / 2(1 + k^2)
+// and delta = 4(c-b-a)^2 - 4(1+k^2)(c-b-a)
+
+// c = k * point.x + point.y
+// a = src.x or dest.x
+// b = src.y or dest.y
+// k = (src.x - dest.x) / (dest.y - src.y)
+const getOneIntersectionPoint = (k, linePoint, radius, circlePoint) => {
+  const c = k * linePoint.x + linePoint.y
+  const a = circlePoint.x
+  const b = circlePoint.y
+  const delta = getDelta(a, b, c, k)
+  if (delta < 0) {
+    throw('The circle and line has no intersection point.')
+  }
+  let coefficient
+  if (utils.coinTossing()) {
+    coefficient = 1
+  } else {
+    coefficient = -1
+  }
+
+  const x = (2 * (a + b - c) + coefficient * Math.sqrt(delta)) / 2 * (1 + k ^ 2)
+  const y = k * x + c
+
+  return {x, y}
+}
+
 // delta = 4(c-b-a)^2 - 4(1+k^2)(c-b-a)
 const getDelta = (a, b, c, k) => {
-
+  const firstPart = 4 * (c - a - b) ^ 2
+  const secondPart = 4 * (1 + k ^ 2) * (c - a - b)
+  return firstPart - secondPart
 }
 
 module.exports = {

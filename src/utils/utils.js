@@ -11,6 +11,11 @@ const random = (start, end) => {
   return Math.round(Math.random() * rate + start)
 }
 
+// return true or false, half to half
+const coinTossing = () => {
+  return Math.random() >= 0.5
+}
+
 const run = (func, sleep, bounce) => {
   bounce = bounce ? bounce : 0
   const sleepTime = random(sleep - bounce, sleep + bounce)
@@ -28,6 +33,7 @@ const wrapper = (...params) => {
 
 const util = {
   random,
+  coinTossing,
   sleep,
   run,
   wrapper,
